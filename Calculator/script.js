@@ -1,9 +1,11 @@
 var buttons = document.getElementsByClassName("button");
 var display = document.getElementById("display");
+var hist = document.querySelector("#history");
 
 display.textContent = 0;
 var str = "";
 var operator = null;
+var ans = 0;
 function isOperator(value) 
 {
     return value == "+" || value == "-" || value == "*" || value == "/";
@@ -44,6 +46,8 @@ for (var i = 0; i < buttons.length; i++)
             display.textContent = "0";
             str = "";
             operator = null;
+            hist.innerText = "";
+            ans = 0;
         } 
         else if (value == "sign") 
         {
@@ -119,8 +123,16 @@ for (var i = 0; i < buttons.length; i++)
         } 
         else if (value == "=") 
         {
-            str = ""+eval(str);
-            display.textContent = str;
+            if(str != "") 
+            {
+                hist.textContent = str;
+                ans = eval(str);
+                display.textContent = ans;
+            }
+            else
+            {
+                display.textContent = "undefined";
+            }
         } 
         else if (value == "back")
         {

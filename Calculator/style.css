@@ -21,10 +21,11 @@
     min-height: 400px;
     background-color: var(--light-grey);
     margin: auto;
-    margin-top: 50px;
+    margin-top: 30px;
     border: 2px solid var(--light-grey);
     border-radius: var(--border-radius);
     padding: 10px;
+
 }
 
 #calculator h1 
@@ -40,6 +41,7 @@
 {
     font-size: 2.8rem;
     display: flex;
+    flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
     color: var(--blue);
@@ -48,13 +50,18 @@
     min-height: 100px;
     border-radius: var(--border-radius);
     background-color: whitesmoke;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
-#display-container p 
+#display-container #display
 {
-    margin: 0.5rem;
-    vertical-align: text-bottom;
+    margin: 0;
+}
+
+#display-container #history 
+{
+    font-size: 2rem;
+    color: gainsboro;
 }
 
 #buttons-container 
@@ -94,4 +101,9 @@
 {
     background-color: var(--red);
     color: white;
+}
+
+#button-clear
+{
+    background-color: var(--orange);
 }
