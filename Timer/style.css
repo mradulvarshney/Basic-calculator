@@ -14,3 +14,15 @@ input{
     flex-direction: column;
     text-align: center;
 }
+
+#button{
+    display: flex;
+}
+
+button{
+    margin: auto;
+}
+
+.add{
+    display: none;
+}

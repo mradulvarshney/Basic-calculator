@@ -4,10 +4,27 @@ var hour = document.getElementById("hour");
 var min = document.getElementById("min");
 var sec = document.getElementById("sec");
 
-
-
+var pause = 0;
 function timer()
 {
+
+    document.getElementById("reset").addEventListener("click", function(){
+        clearInterval(id);
+        t = 0;
+        hour = 0; 
+        min = 0;
+        sec = -1;
+
+        document.getElementById("reset").classList.add("add");
+        document.getElementById("start").classList.remove("add");
+        document.getElementById("pause").classList.add("add");
+
+        document.getElementById("hour").value = "00";
+        document.getElementById("min").value = "00";
+        document.getElementById("sec").value = "00";
+
+    })
+
     if(sec>=0)
     {
         if(sec<10)
@@ -66,17 +83,41 @@ function timer()
     {
         audio.src = "./sound/timeUp.mp3";
         t=0;
-        sec.value = 00;
-        min.value = 00;
+        document.getElementById("reset").classList.add("add");
+        document.getElementById("start").classList.remove("add");
+        document.getElementById("pause").classList.add("add");
         clearInterval(id);
         return;
     }
 }
 
-var start = document.getElementById("start");
+document.getElementById("start").addEventListener("click", start);
+
+var pau = document.getElementById("pause");
+pau.onclick = p;
+function p()
+{
+    if(pause == 0)
+    {
+        document.getElementById("pause").innerHTML = "RESUME";
+        clearInterval(id);
+        t = 0;
+        document.getElementById("reset").classList.remove("add");
+        document.getElementById("start").classList.add("add");
+        document.getElementById("pause").classList.remove("add");
+        pause = 1;
+    }
+    else if(pause==1)
+    {
+        pause = 0;
+        pau=start();
+    }
+}
+
+
 var id = null;
 var t=0;
-start.addEventListener('click', function()
+function start()
 {
     if(t==0)
     {
@@ -119,6 +160,7 @@ start.addEventListener('click', function()
         }
 
         sec = parseInt(getSec());
+        console.log(sec);
         if(sec>59 && sec<3600)
         {
             min = parseInt(min);
@@ -169,7 +211,6 @@ start.addEventListener('click', function()
             }
 
             sec = sec%60;
-            console.log(sec);
             if(sec<10)
             {
                 document.getElementById("sec").value = "0"+sec;
@@ -180,18 +221,23 @@ start.addEventListener('click', function()
             }
         }
     }
+    document.getElementById("reset").classList.remove("add");
+    document.getElementById("start").classList.add("add");
+    document.getElementById("pause").classList.remove("add");
+
+    document.getElementById("pause").innerHTML = "PAUSE";
     id = setInterval(timer, 1000);
-})
+}
 
 function getSec()
 {
-    return sec.value;
+    return document.getElementById("sec").value;
 }
 function getMin()
 {
-    return min.value;
+    return document.getElementById("min").value;
 }
 function getHour()
 {
-    return hour.value;
+    return document.getElementById("hour").value;
 }
