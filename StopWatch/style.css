@@ -1,0 +1,28 @@
+#input{
+    display: flex;
+    justify-content: center;
+}
+input{
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-size: 50px;
+    margin: 10px;
+}
+#number{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+#button{
+    display: flex;
+}
+
+button{
+    margin: auto;
+}
+
+.add{
+    display: none;
+}
