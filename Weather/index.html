@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Weather App </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Linking BoxIcon for Icon -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #43AFFC;
+        }
+
+        ::selection {
+            color: #fff;
+            background: #43AFFC;
+        }
+
+        .wrapper {
+            width: 400px;
+            background: #fff;
+            border-radius: 7px;
+            box-shadow: 7px 7px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .wrapper header {
+            display: flex;
+            font-size: 21px;
+            font-weight: 500;
+            color: #43AFFC;
+            padding: 16px 15px;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+        }
+
+        header i {
+            font-size: 0em;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+
+        .wrapper.active header i {
+            margin-left: 5px;
+            font-size: 30px;
+        }
+
+        .wrapper .input-part {
+            margin: 20px 25px 30px;
+        }
+
+        .wrapper.active .input-part {
+            display: none;
+        }
+
+        .input-part .info-txt {
+            display: none;
+            font-size: 17px;
+            text-align: center;
+            padding: 12px 10px;
+            border-radius: 7px;
+            margin-bottom: 15px;
+
+            color: #721c24;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        .input-part :where(input, button) {
+            width: 100%;
+            height: 55px;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            border-radius: 7px;
+        }
+
+        .input-part input {
+            text-align: center;
+            padding: 0 15px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .input-part input:is(:focus, :valid) {
+            border: 2px solid #43AFFC;
+        }
+
+        .input-part input::placeholder {
+            color: #bfbfbf;
+        }
+
+        .input-part .separator {
+            height: 1px;
+            width: 100%;
+            margin: 25px 0;
+            background: #ccc;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .separator::before {
+            content: "or";
+            color: #b3b3b3;
+            font-size: 19px;
+            padding: 0 15px;
+            background: #fff;
+        }
+
+        .input-part button {
+            color: #fff;
+            cursor: pointer;
+            background: #43AFFC;
+            transition: 0.3s ease;
+        }
+
+        .input-part button:hover {
+            background: #1d9ffc;
+        }
+
+        .wrapper .weather-part {
+            display: none;
+            margin: 30px 0 0;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .wrapper.active .weather-part {
+            display: flex;
+        }
+
+        .weather-part img {
+            max-width: 125px;
+        }
+
+        .weather-part .temp {
+            display: flex;
+            font-weight: 500;
+            font-size: 72px;
+            justify-content: center;
+        }
+
+        .weather-part .temp .numb {
+            font-weight: 600;
+        }
+
+        .weather-part .temp .deg {
+            font-size: 40px;
+            display: block;
+            margin: 10px 5px 0 0;
+        }
+
+        .weather-part .weather {
+            font-size: 21px;
+            text-align: center;
+            margin: -5px 20px 15px;
+        }
+
+        .weather-part .location {
+            display: flex;
+            font-size: 19px;
+            padding: 0 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .location i {
+            font-size: 28px;
+            margin: 4px 5px 0 0;
+        }
+
+        .dateTime {
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <header><i class='bx bx-left-arrow-alt'></i>Weather App</header>
+        <section class="input-part">
+            <p class="info-txt">{%errVal%}</p>
+            <div class="content">
+                <input type="text" spellcheck="false" placeholder="Enter city name" required>
+                <button onclick="run()" > <a href="">Search</a></button>
+                <!-- <div class="separator"></div>
+                <button>Get Device Location</button> -->
+            </div>
+        </section>
+        <section class="weather-part">
+            <!-- <img src="" alt="Weather Icon"> -->
+            <div class="temp">
+                <span class="numb">{%tempval%}</span>
+                <span class="deg">°</span>C
+            </div>
+            <div class="weather"></div>
+            <div class="location">
+                <i class='bx bx-map'></i>
+                <span>{%location%}, {%aountry%}</span>
+            </div>
+
+            <div class="dateTime">
+                <p id="date"></p>
+                <br>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const wrapper = document.querySelector(".wrapper");
+        var infoTxt = document.querySelector(".info-txt");
+        var inputVal = document.querySelector("input");
+        var anchor = document.querySelector("button a");
+
+        var weekday = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+        var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+        const getCurrDay = () => {
+            let dt = new Date();
+            let day = weekday[dt.getDay()];
+            let month = months[dt.getMonth()];
+            let date = dt.getDate();
+            let hour = dt.getHours();
+            let min = dt.getMinutes();
+            let periods = "AM";
+
+            if (hour > 11) {
+                periods = "PM";
+                if (hour > 12) {
+                    hour -= 12;
+                }
+            }
+            if (min < 10) {
+                min = "0" + min;
+            }
+
+            return `${day} | ${month} ${date} | ${hour}:${min} ${periods}`;
+        }
+
+        window.document.getElementById("date").innerHTML = getCurrDay();
+
+        var arrowBack = document.querySelector("header i");
+        arrowBack.addEventListener("click", ()=>{
+            anchor.href = "http://localhost:8000/"
+            wrapper.classList.remove("active");
+        });
+
+        let status = "{%status%}";
+        if(status == 1)
+        {
+            infoTxt.style.display = "none";
+            wrapper.classList.add("active");
+        }
+        else if(status == 0)
+        {
+            infoTxt.style.display = "block";
+        }
+
+
+        function board(e)
+        {
+            console.log(e.key);
+            if(e.keyCode === 13)
+            {
+                console.log(e.key);
+                run();
+            }
+        }
+
+        function run()
+        {
+            const city_name = inputVal.value;
+            console.log(city_name);
+            anchor.href = "http://localhost:8000/"+city_name;
+        }
+        document.addEventListener("keypress", board);
+    </script>
+
+</body>
+
+</html>
