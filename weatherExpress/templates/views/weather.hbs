@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>headerlinks}}
+    <link rel="stylesheet" href="./css/weather.css">
+</head>
+
+<body>
+
+    <!-- navbar part -->
+    {{>navbar}}
+
+    <!-- main header  -->
+    <div class="inputField">
+        <form action="">
+            <input type="text" id="cityName" placeholder="Enter your city" autocomplete="off">
+            <input type="submit" value="Search" id="submitBtn">
+        </form>
+    </div>
+
+    <div class="display">
+        <div class="top">
+            <div id="date"></div>
+        </div>
+        <div class="main">
+            <div id="city_name"></div>
+            <div class="temp_data">
+                <p><span id="temp"></span></p>
+                <div id="temp_status"></div> 
+            </div>
+        </div>
+    </div>
+    <!-- footer part -->
+    {{>footer}}
+
+    <script src="./js/weather.js"></script>
+</body>
+
+</html>
